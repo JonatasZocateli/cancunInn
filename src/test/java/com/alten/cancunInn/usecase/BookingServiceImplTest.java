@@ -66,22 +66,18 @@ public class BookingServiceImplTest {
     @DisplayName("List room availability")
     void listAvailability() {
 
-        BookingDAO bookingDAO = Mockito.mock(BookingDAO.class);
-        Mockito.when(bookingDAO.getIdBooking()).thenReturn(null);
-        Mockito.when(bookingDAO.getCheckInDate()).thenReturn(LocalDate.now().plusDays(1));
-        Mockito.when(bookingDAO.getCheckOutDate()).thenReturn(LocalDate.now().plusDays(3));
-        Mockito.when(bookingDAO.getGuestName()).thenReturn("James");
-
         BookingDAO bookingDAO1 = new BookingDAO(1L, LocalDate.now().plusDays(1), LocalDate.now().plusDays(2), "James");
+        BookingDAO bookingDAO2 = new BookingDAO(2L, LocalDate.now().plusDays(5), LocalDate.now().plusDays(7), "James");
         List<BookingDAO> bookingDAOList = new ArrayList<>();
         bookingDAOList.add(bookingDAO1);
+        bookingDAOList.add(bookingDAO2);
 
         Mockito.when(bookingRepositoryReal.findBookingsFromDate(ArgumentMatchers.any(LocalDate.class))).thenReturn(bookingDAOList);
 
         List<RoomAvailabiltyDTO> listAvailability = bookingService.listAvailability();
         System.out.println(listAvailability);
         Integer daysAvailable = listAvailability.stream().filter(it -> it.isAvailable()).collect(Collectors.toList()).size();
-        Assertions.assertEquals(28, daysAvailable);
+        Assertions.assertEquals(25, daysAvailable);
 
     }
 
@@ -128,7 +124,7 @@ public class BookingServiceImplTest {
     }
 
     @Test
-    @DisplayName("Trying to book a more than 30 days in advance")
+    @DisplayName("Trying to book more than 30 days in advance")
     void placeReservationInAdvance() {
         BookingDTO bookingDAO = Mockito.mock(BookingDTO.class);
         Mockito.when(bookingDAO.getCheckInDate()).thenReturn(LocalDate.now().plusDays(31));

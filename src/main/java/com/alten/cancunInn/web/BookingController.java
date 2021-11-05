@@ -17,25 +17,25 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @GetMapping
+    @GetMapping("/reservations")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<RoomAvailabiltyDTO>> findAvailability(){
         return ResponseEntity.ok().body(bookingService.listAvailability());
     }
 
-    @PostMapping
+    @PostMapping("/reservations")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BookingDAO> bookRoom(@RequestBody BookingDTO bookingDTO) throws Exception {
         return ResponseEntity.ok().body(bookingService.placeReservation(bookingDTO));
     }
 
-    @PutMapping
+    @PutMapping("/reservations")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BookingDAO> updateReservation(@RequestBody BookingDTO bookingDTO) throws Exception {
         return ResponseEntity.ok().body(bookingService.updateReservation(bookingDTO));
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/reservations/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> cancelReservation(@PathVariable ("id") long id){
         bookingService.cancelReservation(id);
