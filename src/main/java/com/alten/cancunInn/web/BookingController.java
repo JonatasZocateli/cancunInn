@@ -3,7 +3,7 @@ package com.alten.cancunInn.web;
 import com.alten.cancunInn.repository.dao.BookingDAO;
 import com.alten.cancunInn.usecase.BookingService;
 import com.alten.cancunInn.web.dto.BookingDTO;
-import com.alten.cancunInn.web.dto.RoomAvailabiltyDTO;
+import com.alten.cancunInn.web.dto.RoomAvailabilityDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class BookingController {
 
     @GetMapping("/reservations")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<RoomAvailabiltyDTO>> findAvailability(){
+    public ResponseEntity<List<RoomAvailabilityDTO>> findAvailability(){
         return ResponseEntity.ok().body(bookingService.listAvailability());
     }
 

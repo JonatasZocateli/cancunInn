@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-public class RoomAvailabiltyDTO {
+public class RoomAvailabilityDTO {
     private LocalDate date;
     private boolean available;
     private String guestName;

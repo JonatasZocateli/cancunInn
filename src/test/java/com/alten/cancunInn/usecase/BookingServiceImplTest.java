@@ -5,7 +5,7 @@ import com.alten.cancunInn.exceptions.PeriodValidateException;
 import com.alten.cancunInn.repository.BookingRepository;
 import com.alten.cancunInn.repository.dao.BookingDAO;
 import com.alten.cancunInn.web.dto.BookingDTO;
-import com.alten.cancunInn.web.dto.RoomAvailabiltyDTO;
+import com.alten.cancunInn.web.dto.RoomAvailabilityDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -59,10 +58,6 @@ public class BookingServiceImplTest {
     }
 
     @Test
-    void cancelReservation() {
-    }
-
-    @Test
     @DisplayName("List room availability")
     void listAvailability() {
 
@@ -74,9 +69,9 @@ public class BookingServiceImplTest {
 
         Mockito.when(bookingRepositoryReal.findBookingsFromDate(ArgumentMatchers.any(LocalDate.class))).thenReturn(bookingDAOList);
 
-        List<RoomAvailabiltyDTO> listAvailability = bookingService.listAvailability();
+        List<RoomAvailabilityDTO> listAvailability = bookingService.listAvailability();
         System.out.println(listAvailability);
-        Integer daysAvailable = listAvailability.stream().filter(it -> it.isAvailable()).collect(Collectors.toList()).size();
+        Integer daysAvailable = (int) listAvailability.stream().filter(RoomAvailabilityDTO::isAvailable).count();
         Assertions.assertEquals(25, daysAvailable);
 
     }

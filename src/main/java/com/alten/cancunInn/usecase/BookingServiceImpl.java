@@ -5,7 +5,7 @@ import com.alten.cancunInn.exceptions.PeriodValidateException;
 import com.alten.cancunInn.repository.BookingRepository;
 import com.alten.cancunInn.repository.dao.BookingDAO;
 import com.alten.cancunInn.web.dto.BookingDTO;
-import com.alten.cancunInn.web.dto.RoomAvailabiltyDTO;
+import com.alten.cancunInn.web.dto.RoomAvailabilityDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -66,8 +66,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<RoomAvailabiltyDTO> listAvailability() {
-        List<RoomAvailabiltyDTO> periodList = new ArrayList();
+    public List<RoomAvailabilityDTO> listAvailability() {
+        List<RoomAvailabilityDTO> periodList = new ArrayList();
         for (int day = 1; day <= 30; day++) {
             periodList.add(verifyIfDateIsAvailable(LocalDate.now().plusDays(day)));
         }
@@ -75,20 +75,20 @@ public class BookingServiceImpl implements BookingService {
         return periodList;
     }
 
-    private void checkStartLimit(BookingDTO bookingDTO) throws Exception {
+    private void checkStartLimit(BookingDTO bookingDTO) {
         if (bookingDTO.getCheckInDate().isBefore(LocalDate.now().plusDays(1))) {
             throw new PeriodValidateException("The stay must start at least tomorrow");
         }
     }
 
-    private void checkDailyLimit(BookingDTO bookingDTO) throws Exception {
+    private void checkDailyLimit(BookingDTO bookingDTO) {
         if (DAYS.between(bookingDTO.getCheckInDate(), bookingDTO.getCheckOutDate()) > 2) {
             throw new PeriodValidateException("The stay must not be longer than 3 days");
         }
     }
 
 
-    private void checkPeriodOfStay(BookingDTO bookingDTO) throws Exception {
+    private void checkPeriodOfStay(BookingDTO bookingDTO) {
 
         if (bookingDTO.getCheckInDate().isAfter(bookingDTO.getCheckOutDate())) {
             throw new PeriodValidateException("Check-In date must be after than check-out date");
@@ -99,28 +99,28 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    private RoomAvailabiltyDTO verifyIfDateIsAvailable(LocalDate dateToValidate) {
+    private RoomAvailabilityDTO verifyIfDateIsAvailable(LocalDate dateToValidate) {
 
         for (BookingDAO unavailablePeriod : bookingRepository.findBookingsFromDate(LocalDate.now().plusDays(1))) {
             if (dateToValidate.isAfter(unavailablePeriod.getCheckInDate())
                     && dateToValidate.isBefore(unavailablePeriod.getCheckOutDate())) {
-                return new RoomAvailabiltyDTO(dateToValidate, false, unavailablePeriod.getGuestName(), unavailablePeriod.getIdBooking());
+                return new RoomAvailabilityDTO(dateToValidate, false, unavailablePeriod.getGuestName(), unavailablePeriod.getIdBooking());
             }
 
             if (dateToValidate.isEqual(unavailablePeriod.getCheckInDate())
                     || dateToValidate.isEqual(unavailablePeriod.getCheckOutDate())) {
-                return new RoomAvailabiltyDTO(dateToValidate, false, unavailablePeriod.getGuestName(), unavailablePeriod.getIdBooking());
+                return new RoomAvailabilityDTO(dateToValidate, false, unavailablePeriod.getGuestName(), unavailablePeriod.getIdBooking());
             }
         }
 
-        return new RoomAvailabiltyDTO(dateToValidate, true, null, null);
+        return new RoomAvailabilityDTO(dateToValidate, true, null, null);
     }
 
 
-    private void checkIfPeriodIsUnavailable(BookingDTO bookingDTO) throws Exception {
+    private void checkIfPeriodIsUnavailable(BookingDTO bookingDTO) {
         LocalDate startDate = bookingDTO.getCheckInDate();
         while (!startDate.isAfter(bookingDTO.getCheckOutDate())) {
-            RoomAvailabiltyDTO roomAvailabiltyDTO = verifyIfDateIsAvailable(startDate);
+            RoomAvailabilityDTO roomAvailabiltyDTO = verifyIfDateIsAvailable(startDate);
             if (!roomAvailabiltyDTO.isAvailable()) {
                 if (!roomAvailabiltyDTO.getBookId().equals(bookingDTO.getIdBooking())) {
                     throw new PeriodValidateException("The selected period is in concurrency with other reservation. Check availability again");
