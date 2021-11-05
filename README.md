@@ -2,7 +2,7 @@
 
 This API allows to manager room reservations.
 
-# Availabitlity List
+# Availability List
 ## [GET] `/reservations`
 
 ### [RESPONSE]
