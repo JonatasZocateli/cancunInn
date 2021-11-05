@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 public class ResponseExceptionHandler {
 
     @ExceptionHandler(PeriodValidateException.class)
-    public ResponseEntity<ValidationError> periodValidateException(PeriodValidateException e, HttpServletRequest request) {
-        ValidationError error = new ValidationError();
+    public ResponseEntity<ValidationErrorDTO> periodValidateException(PeriodValidateException e, HttpServletRequest request) {
+        ValidationErrorDTO error = new ValidationErrorDTO();
         error.setTimestamp(LocalDateTime.now());
         error.setStatus(HttpStatus.BAD_REQUEST.value());
         error.setError("Period is invalid");
@@ -24,9 +24,9 @@ public class ResponseExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler(EmptyResultDataAccessException.class)
-    public ResponseEntity<ValidationError> reservationNotFound(EmptyResultDataAccessException e, HttpServletRequest request){
-        ValidationError error = new ValidationError();
+    @ExceptionHandler(BookingNotFoundException.class)
+    public ResponseEntity<ValidationErrorDTO> reservationNotFound(BookingNotFoundException e, HttpServletRequest request){
+        ValidationErrorDTO error = new ValidationErrorDTO();
         error.setTimestamp(LocalDateTime.now());
         error.setStatus(HttpStatus.NOT_FOUND.value());
         error.setError("ID not found");

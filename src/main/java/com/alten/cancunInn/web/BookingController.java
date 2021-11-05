@@ -32,7 +32,7 @@ public class BookingController {
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BookingDAO> updateReservation(@RequestBody BookingDTO bookingDTO) throws Exception {
-        return ResponseEntity.ok().body(bookingService.placeReservation(bookingDTO));
+        return ResponseEntity.ok().body(bookingService.updateReservation(bookingDTO));
     }
 
     @DeleteMapping(value = "/{id}")

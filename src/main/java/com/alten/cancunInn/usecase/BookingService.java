@@ -12,6 +12,8 @@ public interface BookingService {
 
     public BookingDAO placeReservation(BookingDTO bookingDTO) throws Exception;
 
+    public BookingDAO updateReservation(BookingDTO bookingDTO) throws Exception;
+
     public void cancelReservation(Long id);
 
     public List<RoomAvailabiltyDTO> listAvailability();

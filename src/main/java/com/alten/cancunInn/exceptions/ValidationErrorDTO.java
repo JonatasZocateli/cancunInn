@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ValidationError implements Serializable {
+public class ValidationErrorDTO implements Serializable {
 
     private LocalDateTime timestamp;
     private Integer status;

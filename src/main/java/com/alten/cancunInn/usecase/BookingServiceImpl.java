@@ -1,5 +1,6 @@
 package com.alten.cancunInn.usecase;
 
+import com.alten.cancunInn.exceptions.BookingNotFoundException;
 import com.alten.cancunInn.exceptions.PeriodValidateException;
 import com.alten.cancunInn.repository.BookingRepository;
 import com.alten.cancunInn.repository.dao.BookingDAO;
@@ -37,11 +38,30 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public BookingDAO updateReservation(BookingDTO bookingDTO) throws Exception {
+
+        if(!bookingRepository.existsById(bookingDTO.getIdBooking())){
+            throw new BookingNotFoundException("Booking ID not found");
+        }
+
+        checkStartLimit(bookingDTO);
+        checkDailyLimit(bookingDTO);
+        checkPeriodOfStay(bookingDTO);
+        checkIfPeriodIsUnavailable(bookingDTO);
+
+        return bookingRepository.save(
+                new BookingDAO(bookingDTO.getIdBooking(),
+                        bookingDTO.getCheckInDate(),
+                        bookingDTO.getCheckOutDate(),
+                        bookingDTO.getGuestName()));
+    }
+
+    @Override
     public void cancelReservation(Long id) {
         try {
             bookingRepository.deleteById(id);
         } catch (EmptyResultDataAccessException ex) {
-            throw new EmptyResultDataAccessException(ex.getMessage(), ex.getExpectedSize());
+            throw new BookingNotFoundException("Booking ID not found");
         }
     }
 
