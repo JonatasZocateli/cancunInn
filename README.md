@@ -36,7 +36,7 @@ This API allows to manager room reservations.
 		"guestName": "Jonas" -> Guest name (In order to verifiy who reserve it)
 	}
 
-# => Cancel a reservation
+# Cancel a reservation
 ## [DELETE] `/reservations/{bookingId}` 
 
 {bookingId} -> Booking ID to cancel
