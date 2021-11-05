@@ -1,5 +1,6 @@
 package com.alten.cancunInn.usecase;
 
+import com.alten.cancunInn.exceptions.BookingNotFoundException;
 import com.alten.cancunInn.exceptions.PeriodValidateException;
 import com.alten.cancunInn.repository.BookingRepository;
 import com.alten.cancunInn.repository.dao.BookingDAO;
@@ -63,7 +64,7 @@ public class BookingServiceImplTest {
 
     @Test
     @DisplayName("List room availability")
-    void listAvailability() throws Exception {
+    void listAvailability() {
 
         BookingDAO bookingDAO = Mockito.mock(BookingDAO.class);
         Mockito.when(bookingDAO.getIdBooking()).thenReturn(null);
@@ -94,6 +95,21 @@ public class BookingServiceImplTest {
                 PeriodValidateException.class,
                 () -> bookingService.placeReservation(bookingDAO),
                 "The stay must start at least tomorrow");
+
+    }
+
+    @Test
+    @DisplayName("Trying to update a book with wrong id")
+    void updateReservationWithInvalidId() {
+        BookingDTO bookingDTO = Mockito.mock(BookingDTO.class);
+        Mockito.when(bookingDTO.getIdBooking()).thenReturn(2L);
+
+        Mockito.when(bookingRepositoryReal.existsById(2L)).thenReturn(false);
+
+        Assertions.assertThrows(
+                BookingNotFoundException.class,
+                () -> bookingService.updateReservation(bookingDTO),
+                "Booking ID found");
 
     }
 
