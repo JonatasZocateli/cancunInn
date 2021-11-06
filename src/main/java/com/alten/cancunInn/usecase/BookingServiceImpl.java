@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -23,7 +24,7 @@ public class BookingServiceImpl implements BookingService {
     private BookingRepository bookingRepository;
 
     @Override
-    public BookingDAO placeReservation(BookingDTO bookingDTO) throws Exception {
+    public BookingDAO placeReservation(BookingDTO bookingDTO) {
 
         checkStartLimit(bookingDTO);
         checkDailyLimit(bookingDTO);
@@ -38,7 +39,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDAO updateReservation(BookingDTO bookingDTO, Long id) throws Exception {
+    public BookingDAO updateReservation(BookingDTO bookingDTO, Long id) {
 
         if(!bookingRepository.existsById(id)){
             throw new BookingNotFoundException("Booking ID not found");
@@ -68,7 +69,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<RoomAvailabilityDTO> listAvailability() {
-        List<RoomAvailabilityDTO> periodList = new ArrayList();
+        List<RoomAvailabilityDTO> periodList = new ArrayList<>(Collections.emptyList());
         for (int day = 1; day <= 30; day++) {
             periodList.add(verifyIfDateIsAvailable(LocalDate.now().plusDays(day)));
         }
@@ -121,9 +122,9 @@ public class BookingServiceImpl implements BookingService {
     private void checkIfPeriodIsUnavailable(BookingDTO bookingDTO) {
         LocalDate startDate = bookingDTO.getCheckInDate();
         while (!startDate.isAfter(bookingDTO.getCheckOutDate())) {
-            RoomAvailabilityDTO roomAvailabiltyDTO = verifyIfDateIsAvailable(startDate);
-            if (!roomAvailabiltyDTO.isAvailable()) {
-                if (!roomAvailabiltyDTO.getBookId().equals(bookingDTO.getIdBooking())) {
+            RoomAvailabilityDTO roomAvailabilityDTO = verifyIfDateIsAvailable(startDate);
+            if (!roomAvailabilityDTO.isAvailable()) {
+                if (!roomAvailabilityDTO.getBookId().equals(bookingDTO.getIdBooking())) {
                     throw new PeriodValidateException("The selected period is in concurrency with other reservation. Check availability again");
                 }
             }
