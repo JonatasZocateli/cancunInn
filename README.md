@@ -2,6 +2,14 @@
 
 This API allows to manager room reservations.
 
+# How to run it
+## `./gradlew bootRun`
+
+# Specifications
+Language: Java 11
+DB: H2
+
+
 # Availability List
 ## [GET] `/reservations`
 
