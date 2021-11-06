@@ -1,4 +1,4 @@
-# cancunInn
+# CANCUN INN
 
 This API allows to manager room reservations.
 
@@ -22,18 +22,20 @@ This API allows to manager room reservations.
 	{
 		"checkInDate": "2021-11-06", -> Check-In date
 		"checkOutDate": "2021-11-07", -> Check-Out date
-		"guestName": "Jonas" -> Guest name (In order to verifiy who reserve it)
+		"guestName": "Jonas" -> Guest name (In order to verifiy who reserved it)
 	}
 
 
  # Update a reservation
-## [PUT] `/reservations`
+## [PUT] `/reservations/{bookingId}`
+
+{bookingId} -> Booking ID to update
+
 ### [REQUEST]
 	{
-		"idBooking": 2, -> Id booking to update
 		"checkInDate": "2021-11-06", -> Check-In date
 		"checkOutDate": "2021-11-07", -> Check-Out date
-		"guestName": "Jonas" -> Guest name (In order to verifiy who reserve it)
+		"guestName": "Jonas" -> Guest name (In order to verifiy who reserved it)
 	}
 
 # Cancel a reservation

@@ -29,10 +29,10 @@ public class BookingController {
         return ResponseEntity.ok().body(bookingService.placeReservation(bookingDTO));
     }
 
-    @PutMapping("/reservations")
+    @PutMapping("/reservations/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BookingDAO> updateReservation(@RequestBody BookingDTO bookingDTO) throws Exception {
-        return ResponseEntity.ok().body(bookingService.updateReservation(bookingDTO));
+    public ResponseEntity<BookingDAO> updateReservation(@PathVariable("id") Long id, @RequestBody BookingDTO bookingDTO) throws Exception {
+        return ResponseEntity.ok().body(bookingService.updateReservation(bookingDTO, id));
     }
 
     @DeleteMapping(value = "/reservations/{id}")

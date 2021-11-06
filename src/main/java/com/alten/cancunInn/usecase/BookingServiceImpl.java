@@ -38,12 +38,13 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDAO updateReservation(BookingDTO bookingDTO) throws Exception {
+    public BookingDAO updateReservation(BookingDTO bookingDTO, Long id) throws Exception {
 
-        if(!bookingRepository.existsById(bookingDTO.getIdBooking())){
+        if(!bookingRepository.existsById(id)){
             throw new BookingNotFoundException("Booking ID not found");
         }
 
+        bookingDTO.setIdBooking(id);
         checkStartLimit(bookingDTO);
         checkDailyLimit(bookingDTO);
         checkPeriodOfStay(bookingDTO);

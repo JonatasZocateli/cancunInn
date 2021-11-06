@@ -99,7 +99,7 @@ public class BookingServiceImplTest {
 
         Assertions.assertThrows(
                 BookingNotFoundException.class,
-                () -> bookingService.updateReservation(bookingDTO),
+                () -> bookingService.updateReservation(bookingDTO, 2L),
                 "Booking ID found");
 
     }

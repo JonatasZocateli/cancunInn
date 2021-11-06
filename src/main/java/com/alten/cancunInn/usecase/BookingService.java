@@ -12,7 +12,7 @@ public interface BookingService {
 
     BookingDAO placeReservation(BookingDTO bookingDTO) throws Exception;
 
-    BookingDAO updateReservation(BookingDTO bookingDTO) throws Exception;
+    BookingDAO updateReservation(BookingDTO bookingDTO, Long id) throws Exception;
 
     void cancelReservation(Long id);
 
