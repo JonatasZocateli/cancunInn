@@ -49,7 +49,7 @@ DB: H2
  # Update a reservation
 ## [PUT] `/reservations/{bookingId}`
 
-{bookingId} -> Booking ID to update
+`bookingId` -> Booking ID to update
 
 ### [REQUEST]
 ```json
